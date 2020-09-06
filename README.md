@@ -1,5 +1,6 @@
 ## Game of Life
 
+#### Introduction
 Citing wikipedia, _Game of Life_ is a cellular automation devised by John Conway
 (1970).
 
@@ -11,5 +12,16 @@ the following rules:
 3. If a cell has three live neighbours, it comes to life
 4. If a cell has more than three live neighbours, it dies due to overpopulation
 
+#### How to run
 The algorithm is implemented in C++, and the simulation is presented in
-the terminal.
+the terminal. It has been tested using the Guake and Xfce terminal emulators on
+Ubuntu 18.04.
+To check out the simulation, download the main file `gameOfLife.cpp`, and in its
+directory run:
+```bash
+g++ gameOfLife.cpp && ./a.out
+```
+As far as I know there shouldn't be any dependency to compile and run the
+program.
+
+#### Implementation details
