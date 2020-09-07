@@ -24,9 +24,16 @@ directory run:
 g++ source/gameOfLife.cpp && ./a.out
 ```
 As far as I know there shouldn't be any dependency to compile and run the
-program.
+program. The header files required to obtain the terminal size for fullscreen
+mode might need to be changed for windows.
 
 #### Implementation details
 The boundaries of the grid are periodic, meaning that it loops around its
-borders. For example, group of living cells moving through the right border will
-appear coming out from the left border.
+borders. For example, a group of living cells moving through the right border will
+appear coming out from the left border. 
+Scanning the layout of the current grid, the next generation is evaluated by going 
+from cell to cell and counting its live neighbours. Then the updated grid replaces 
+the previous one and gets printed on the screen.
+If a stable generation is reached ( either because all cells are dead, or
+because no new ones are produced) then the simulation terminates. The case of a
+stable generation that includes oscillating groups does not cause termination.

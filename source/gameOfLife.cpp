@@ -14,10 +14,10 @@ struct point {
 
 // Collection of configurations for easy access
 namespace configs{
-  const int gen_time    = 100000/2; // Controls the simulation speed
-  const bool fullscreen = false;    // Control whether the whole terminal is used
-  const int row_num     = 20;       // If not fullscreen, number of rows
-  const int col_num     = 50;       // If not fullscreen, number of cols
+  const int  gen_time   = 100000/2; // Controls the simulation speed
+  const bool fullscreen = false;    // Control whether whole terminal is used
+  const int  row_num    = 20;       // If not fullscreen, number of rows
+  const int  col_num    = 50;       // If not fullscreen, number of cols
   // Collection of cells to be declared as live when starting. If some point is
   // out of the grid it will be ignored
   const std::vector<point> init_live = { point(0,0), point(0,1), point(0,2), \
