@@ -3,32 +3,56 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 
+// Struct that holds coordinates to make initial grid setting easier
+struct point { 
+  int x; int y;
+  point(int x0, int y0) {
+    x = x0; 
+    y = y0; 
+  };
+};
+
+// Collection of configurations for easy access
 namespace configs{
-  const int gen_time    = 100000;
-  const bool fullscreen = false;
+  const int gen_time    = 100000/2; // Controls the simulation speed
+  const bool fullscreen = false;    // Control whether the whole terminal is used
+  const int row_num     = 20;       // If not fullscreen, number of rows
+  const int col_num     = 50;       // If not fullscreen, number of cols
+  // Collection of cells to be declared as live when starting. If some point is
+  // out of the grid it will be ignored
+  const std::vector<point> init_live = { point(0,0), point(0,1), point(0,2), \
+                                         point(1,1), point(2,1), point(3,2), \
+                                         point(3,1), point(4,1), point(5,2), \
+                                         point(6,4), point(4,2), point(4,9), \
+                                         point(7,4), point(4,7), point(8,1)};
 }
 
 int main(void)
 {
-  struct winsize w;
-  ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
   int rows;
   int cols;
+
+  // Set grid dimensions according to configuration
   if (configs::fullscreen){
+    struct winsize w;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
     rows = w.ws_row - 2;
     cols = w.ws_col;
   } else {
-    rows = 20;
-    cols = 50;
+    rows = configs::row_num;
+    cols = configs::col_num;
   }
+
+  // Initialize the grid to all dead, and then set the live cells
   size_t generation = 1;
   int current_grid[rows][cols] = {0};
   int updated_grid[rows][cols] = {0};
-
-  current_grid[1][1] = current_grid[2][1] = current_grid[3][2] = 1;
-  current_grid[3][1] = current_grid[4][1] = current_grid[5][2] = 1;
-  current_grid[6][4] = current_grid[4][2] = current_grid[4][9] = 1;
-  current_grid[7][4] = current_grid[4][7] = current_grid[8][1] = 1;
+  for (auto const& p: configs::init_live){
+    if ( p.x < 0 || p.y < 0 || p.x >= rows || p.y >= cols ){
+      continue;
+    }
+    current_grid[p.x][p.y] = 1;
+  }
 
   // Print out the initial grid
   std::cout << "\033[2J\033[H";
